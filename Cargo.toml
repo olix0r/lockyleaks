@@ -1,0 +1,9 @@
+[package]
+name = "lockyleaks"
+version = "0.1.0"
+authors = ["Oliver Gould <ver@buoyant.io>"]
+edition = "2018"
+
+[dependencies]
+futures = "0.1"
+tokio = "0.1"
