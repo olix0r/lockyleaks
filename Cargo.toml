@@ -7,3 +7,6 @@ edition = "2018"
 [dependencies]
 futures = "0.1"
 tokio = "0.1"
+
+[patch.crates-io]
+tokio-sync = { git = "https://github.com/tokio-rs/tokio", branch = "eliza/0.2-semaphore" }

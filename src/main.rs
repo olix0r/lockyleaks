@@ -3,16 +3,28 @@ use std::time::Duration;
 use tokio::sync::{lock, mpsc};
 
 fn main() {
-    tokio::run(future::lazy(|| {
+    const USAGE: &'static str = "usage: lockyleaks <concurrency> <iterations>";
+    let args = std::env::args().collect::<Vec<_>>();
+    let concurrency = args
+        .get(1)
+        .expect(USAGE)
+        .parse::<usize>()
+        .expect("invalid concurrency");
+    let iterations = args
+        .get(2)
+        .expect(USAGE)
+        .parse::<usize>()
+        .expect("invalid iterations");
+
+    tokio::run(future::lazy(move || {
         let lock = lock::Lock::new(());
 
-        let concurrency = 10000;
         let (tx, rx) = mpsc::channel(1);
         for _ in 0..concurrency {
             tokio::spawn(Loop {
                 lock: lock.clone(),
                 pending: None,
-                remaining: 109,
+                remaining: iterations,
                 _tx: tx.clone(),
             });
         }
